@@ -31,14 +31,30 @@ plt.show()
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
 
+from time import time
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 
+clf = KNeighborsClassifier(n_neighbors=1)
 
+#clf = GaussianNB()
 
+#clf = RandomForestClassifier(max_depth=2, random_state=0)
 
-
-
+t0 = time()
+clf.fit(features_train, labels_train)
+print "training time:", round(time()-t0, 3), "s"
 
 try:
     prettyPicture(clf, features_test, labels_test)
 except NameError:
     pass
+
+t1 = time()
+pred = clf.predict(features_test)
+print "training pred:", round(time()-t1, 3), "s"
+
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(labels_test, pred)
+print "accuracy:", accuracy
