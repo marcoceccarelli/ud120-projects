@@ -29,7 +29,7 @@ target, features = targetFeatureSplit( data )
 from sklearn.cross_validation import train_test_split
 feature_train, feature_test, target_train, target_test = train_test_split(features, target, test_size=0.5, random_state=42)
 train_color = "b"
-test_color = "b"
+test_color = "r"
 
 
 
@@ -38,12 +38,19 @@ test_color = "b"
 ### plots it correctly. Don't forget to change the test_color above from "b" to
 ### "r" to differentiate training points from test points.
 
+from sklearn import linear_model
 
+# Create linear regression object
+reg = linear_model.LinearRegression()
 
+#feature_test = feature_train
+#target_test = target_train 
 
+# Train the model using the training sets
+reg.fit(feature_train, target_train)
 
-
-
+print('Coefficients: \n', reg.coef_)
+print('Intercepts: \n', reg.intercept_)
 
 ### draw the scatterplot, with color-coded training and testing points
 import matplotlib.pyplot as plt
@@ -58,12 +65,21 @@ plt.scatter(feature_test[0], target_test[0], color=train_color, label="train")
 
 
 
+pred = reg.predict(feature_test)
+
+print('Score train: \n', reg.score(feature_train, target_train))
+
+print('Score test: \n', reg.score(feature_test, target_test))
 
 ### draw the regression line, once it's coded
 try:
-    plt.plot( feature_test, reg.predict(feature_test) )
+    plt.plot( feature_test, pred )
 except NameError:
     pass
+reg.fit(feature_test, target_test)
+plt.plot(feature_train, reg.predict(feature_train), color="b") 
+print('Coefficients: \n', reg.coef_)
+print('Intercepts: \n', reg.intercept_)
 plt.xlabel(features_list[1])
 plt.ylabel(features_list[0])
 plt.legend()
