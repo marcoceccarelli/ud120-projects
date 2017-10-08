@@ -49,8 +49,8 @@ data_dict.pop("TOTAL", 0)
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
 #feature_3 = "total_payments"
-poi  = "poi"
-features_list = [poi, feature_1, feature_2]
+#poi  = "poi"
+features_list = [feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
 
@@ -60,11 +60,14 @@ from operator import attrgetter
 min_num = min(filterdata.values(),key=lambda x: x['salary'])
 max_num = max(filterdata.values(),key=lambda x: x['salary'])
 
-
 print "min_value =" , min_num['salary']
-
 print "max_num =" , max_num['salary']
 
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+scaler.fit(data)
+scaler.transform(data)
+print "scaled" , scaler.transform([[200000, 1000000]])
 
 ### in the "clustering with 3 features" part of the mini-project,
 ### you'll want to change this line to 
