@@ -14,7 +14,6 @@ word_data = pickle.load( open(words_file, "r"))
 authors = pickle.load( open(authors_file, "r") )
 
 
-
 ### test_size is the percentage of events assigned to the test set (the
 ### remainder go into training)
 ### feature matrices changed to dense representations for compatibility with
@@ -29,6 +28,8 @@ features_train = vectorizer.fit_transform(features_train)
 features_test  = vectorizer.transform(features_test).toarray()
 
 
+print "word 14343", vectorizer.get_feature_names()[14343]
+
 ### a classic way to overfit is to use a small number
 ### of data points and a large number of features;
 ### train on only 150 events to put ourselves in this regime
@@ -38,6 +39,20 @@ labels_train   = labels_train[:150]
 
 
 ### your code goes here
+from sklearn import tree
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+#print "score: ", clf.score(features_test, labels_test)
+from sklearn.metrics import accuracy_score
+print "score test: ", accuracy_score(labels_test, pred)
+
+print "len: ", len(clf.feature_importances_)
 
 
 
+i = 0
+for fi in clf.feature_importances_:
+    i += 1
+    if(fi > 0.1):
+        print "feature", i," importance: ",fi
